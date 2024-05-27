@@ -54,8 +54,7 @@ class InceptionTime:
 
         # Limit parameter space based on input
         if IT_max_max_kernel_size > self.x_shape[1]:
-            print(
-                "Set maximum kernel size for InceptionTime models to number of timesteps.")
+            print("Set maximum kernel size for InceptionTime models to number of timesteps.")
             IT_max_max_kernel_size = self.x_shape[1]
 
         self.settings = {
@@ -164,8 +163,7 @@ class InceptionTime:
                                         kernel_initializer=weightinit,
                                         use_bias=False)(input_inception))
 
-            max_pool_1 = MaxPool1D(
-                pool_size=3, strides=stride, padding='same')(input_tensor)
+            max_pool_1 = MaxPool1D(pool_size=3, strides=stride, padding='same')(input_tensor)
 
             conv_last = Conv1D(filters=filters_number,
                                kernel_size=1,
@@ -211,8 +209,8 @@ class InceptionTime:
         output_layer = Dense(self.number_of_classes)(gap_layer)
 
         if task is Task.classification:
-            loss_function = 'binary_crossentropy'
-            output_layer = Activation('sigmoid')(output_layer)
+            loss_function = 'categorical_crossentropy'
+            output_layer = Activation('softmax')(output_layer)
         elif task is Task.regression:
             loss_function = 'mean_squared_error'
 
@@ -220,7 +218,7 @@ class InceptionTime:
         model = Model(inputs=input_layer, outputs=output_layer)
 
         model.compile(loss=loss_function,
-                      optimizer=Adam(learning_rate=learning_rate),
+                      optimizer=Adam(lr=learning_rate),
                       metrics=self.metrics)
 
         return model

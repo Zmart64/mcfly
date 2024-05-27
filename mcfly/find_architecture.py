@@ -1,4 +1,4 @@
-
+#
 # mcfly
 #
 # Copyright 2020 Netherlands eScience Center
@@ -78,7 +78,7 @@ def train_models_on_samples(X_train, y_train, X_val, y_val, models,
           or `(inputs, targets, sample_weights)`
         - generator or `keras.utils.Sequence`. Should return a tuple of
           `(inputs, targets)` or `(inputs, targets, sample_weights)`
-
+          
         The input dataset for validation of shape
         (num_samples_val, num_timesteps, num_channels)
         More details can be found in the documentation for the Keras
@@ -146,8 +146,7 @@ def train_models_on_samples(X_train, y_train, X_val, y_val, models,
     else:
         # TODO Subset (is it possible?)
         if subset_size != -1:
-            warnings.warn(
-                "Argument 'subset_size' is not supported for tf.data.Dataset or generators and will be ignored")
+            warnings.warn("Argument 'subset_size' is not supported for tf.data.Dataset or generators and will be ignored")
 
         data_train = X_train
 
@@ -175,7 +174,7 @@ def train_models_on_samples(X_train, y_train, X_val, y_val, models,
                                            verbose=verbose, mode='auto')]
         else:
             callbacks = []
-        history = model.fit(x=data_train,
+        history = model.fit(x = data_train,
                             epochs=nr_epochs,
                             # see comment on subsize_set
                             validation_data=data_val,
@@ -185,8 +184,7 @@ def train_models_on_samples(X_train, y_train, X_val, y_val, models,
         histories.append(history)
 
         for metric_name in model.metrics_names:
-            val_metrics[metric_name].append(_get_from_history(
-                'val_' + metric_name, history.history)[-1])
+            val_metrics[metric_name].append(_get_from_history('val_' + metric_name, history.history)[-1])
 
         if outputfile is not None:
             store_train_hist_as_json(params, model_types, history.history,
@@ -208,9 +206,6 @@ def _get_from_history(metric_name, history_history):
         return _get_either_from_history('val_accuracy', 'val_acc', history_history)
     if metric_name == 'accuracy':
         return _get_either_from_history('accuracy', 'acc', history_history)
-    # print('history_print: ', metric_name)
-    if metric_name == 'val_compile_metrics':
-        return _get_either_from_history('val_accuracy', 'val_acc', history_history)
     return history_history[metric_name]
 
 
@@ -249,14 +244,12 @@ def store_train_hist_as_json(params, model_type, history, outputfile, metric_nam
 
     jsondata['metrics'] = {}
     for metric in history:
-        jsondata['metrics'][metric] = [
-            _cast_to_primitive_type(val) for val in history[metric]]
+        jsondata['metrics'][metric] = [_cast_to_primitive_type(val) for val in history[metric]]
     jsondata['modeltype'] = model_type
 
     for k in jsondata.keys():
         if isinstance(jsondata[k], (np.ndarray, list)):
-            jsondata[k] = [_cast_to_primitive_type(
-                element) for element in jsondata[k]]
+            jsondata[k] = [_cast_to_primitive_type(element) for element in jsondata[k]]
 
     _create_or_append_to_json(jsondata, outputfile)
 
@@ -299,8 +292,7 @@ def _infer_task_from_y(y_train, y_val):
     if not y_train_is_one_hot and not y_val_is_one_hot:
         return Task.regression
 
-    raise ValueError(
-        "Both 'y_train' and 'y_val' must be one-hot encoding or continuous")
+    raise ValueError("Both 'y_train' and 'y_val' must be one-hot encoding or continuous")
 
 
 def _infer_task(X_train, X_val, y_train, y_val):
@@ -325,7 +317,7 @@ def _infer_task(X_train, X_val, y_train, y_val):
             y_val = _get_first_batch(X_val)
         elif isinstance(X_val, (tf.data.Dataset)):
             y_val = _get_first_batch(X_val).numpy()
-
+    
     return _infer_task_from_y(y_train, y_val)
 
 
@@ -443,16 +435,16 @@ def find_best_architecture(X_train, y_train, X_val, y_val, verbose=True,
                                       metrics=[metric],
                                       **kwargs)
     _, val_performance, _ = train_models_on_samples(X_train,
-                                                    y_train,
-                                                    X_val,
-                                                    y_val,
-                                                    models,
-                                                    nr_epochs,
-                                                    subset_size=subset_size,
-                                                    verbose=verbose,
-                                                    outputfile=outputpath,
-                                                    model_path=model_path,
-                                                    class_weight=class_weight)
+                                                   y_train,
+                                                   X_val,
+                                                   y_val,
+                                                   models,
+                                                   nr_epochs,
+                                                   subset_size=subset_size,
+                                                   verbose=verbose,
+                                                   outputfile=outputpath,
+                                                   model_path=model_path,
+                                                   class_weight=class_weight)
     best_model_index = np.argmax(val_performance[metric])
     best_model, best_params, best_model_type = models[best_model_index]
 
@@ -466,21 +458,22 @@ def find_best_architecture(X_train, y_train, X_val, y_val, verbose=True,
             print('Model type: ', best_model_type)
             print('Hyperparameters: ', best_params)
             print(str(metric) + ' on validation set: ',
-                  val_performance[metric][best_model_index])
+                val_performance[metric][best_model_index])
             print('Performance of kNN on validation set', knn_performance)
 
         if _kNN_better_than_best_model(val_performance[metric][best_model_index], knn_performance, task):
             warnings.warn('Best model not better than kNN: ' +
-                          str(val_performance[metric][best_model_index]) + ' vs  ' +
-                          str(knn_performance)
-                          )
-
+                        str(val_performance[metric][best_model_index]) + ' vs  ' +
+                        str(knn_performance)
+                        )
+        
     return best_model, best_params, best_model_type, knn_performance
 
 
 def _kNN_better_than_best_model(best_model_performance, knn_performance, task):
     return (task is Task.classification and best_model_performance < knn_performance) or \
         (task is Task.regression and best_model_performance > knn_performance)
+
 
 
 def _get_metric_name(name):

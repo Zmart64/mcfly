@@ -67,7 +67,7 @@ class DeepConvLSTM:
             'deepconvlstm_max_lstm_layers': deepconvlstm_max_lstm_layers,
             'deepconvlstm_min_lstm_dims': deepconvlstm_min_lstm_dims,
             'deepconvlstm_max_lstm_dims': deepconvlstm_max_lstm_dims,
-        }
+            }
 
         # Add missing parameters from default
         for key, value in base_parameters.items():
@@ -84,9 +84,9 @@ class DeepConvLSTM:
         """
         params = Namespace(**self.settings)
         hyperparameters = generate_base_hyperparameter_set(params.low_lr,
-                                                           params.high_lr,
-                                                           params.low_reg,
-                                                           params.high_reg)
+                                                            params.high_lr,
+                                                            params.low_reg,
+                                                            params.high_reg)
         number_of_conv_layers = np.random.randint(params.deepconvlstm_min_conv_layers,
                                                   params.deepconvlstm_max_conv_layers + 1)
         hyperparameters['filters'] = np.random.randint(params.deepconvlstm_min_conv_filters,
@@ -143,8 +143,7 @@ class DeepConvLSTM:
             model.add(Activation('relu'))
         # reshape 3 dimensional array back into a 2 dimensional array,
         # but now with more dept as we have the the filters for each channel
-        model.add(Reshape(target_shape=(
-            dim_length, filters[-1] * dim_channels)))
+        model.add(Reshape(target_shape=(dim_length, filters[-1] * dim_channels)))
 
         for lstm_dim in lstm_dims:
             model.add(LSTM(units=lstm_dim, return_sequences=True,
@@ -164,12 +163,12 @@ class DeepConvLSTM:
         model.add(Lambda(lambda x: x[:, -1, :], output_shape=[dim_output]))
 
         if task is Task.classification:
-            loss_function = 'binary_crossentropy'
+            loss_function = 'categorical_crossentropy'
         elif task is Task.regression:
             loss_function = 'mean_squared_error'
 
         model.compile(loss=loss_function,
-                      optimizer=Adam(learning_rate=learning_rate),
+                      optimizer=Adam(lr=learning_rate),
                       metrics=self.metrics)
 
         return model
