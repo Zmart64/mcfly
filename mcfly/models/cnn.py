@@ -142,7 +142,7 @@ class CNN:
             loss_function = 'mean_squared_error'
 
         model.compile(loss=loss_function,
-                      optimizer=Adam(lr=learning_rate),
+                      optimizer=Adam(learning_rate=learning_rate),
                       metrics=self.metrics)
 
         return model

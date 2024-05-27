@@ -152,8 +152,10 @@ class ResNet:
 
         # Define/guess filter sizes and kernel sizes
         # Logic here is that kernals become smaller while the number of filters increases
-        kernel_sizes = [max(3, int(max_kernel_size // (1.41 ** i))) for i in range(network_depth)]
-        filter_numbers = [int(min_filters_number * (1.41 ** i)) for i in range(network_depth)]
+        kernel_sizes = [max(3, int(max_kernel_size // (1.41 ** i)))
+                        for i in range(network_depth)]
+        filter_numbers = [int(min_filters_number * (1.41 ** i))
+                          for i in range(network_depth)]
 
         for i in range(network_depth):
             x = conv_bn_relu_3_sandwich(x, filter_numbers[i], kernel_sizes[i])
@@ -162,8 +164,8 @@ class ResNet:
         output_layer = Dense(self.number_of_classes)(x)
 
         if task is Task.classification:
-            loss_function = 'categorical_crossentropy'
-            output_layer = Activation('softmax')(output_layer)
+            loss_function = 'binary_crossentropy'
+            output_layer = Activation('sigmoid')(output_layer)
         elif task is Task.regression:
             loss_function = 'mean_squared_error'
 
@@ -171,7 +173,7 @@ class ResNet:
         model = Model(inputs=inputs, outputs=output_layer)
 
         model.compile(loss=loss_function,
-                      optimizer=Adam(lr=learning_rate),
+                      optimizer=Adam(learning_rate=learning_rate),
                       metrics=self.metrics)
 
         return model
