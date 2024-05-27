@@ -4,17 +4,19 @@ from setuptools import setup, find_packages
 with open(os.path.join(os.path.dirname(__file__), 'mcfly/_version.py')) as versionpy:
     exec(versionpy.read())
 
+
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+
 setup(
-    name = "mcfly",
-    version = __version__,
-    description = ("Deep learning for time series data"),
-    license = "Apache Software License 2.0",
-    keywords = "Python",
-    url = "https://github.com/NLeSC/mcfly",
-    packages = find_packages(),
+    name="mcfly",
+    version=__version__,
+    description=("Deep learning for time series data"),
+    license="Apache Software License 2.0",
+    keywords="Python",
+    url="https://github.com/NLeSC/mcfly",
+    packages=find_packages(),
     long_description=read('README.md'),
     long_description_content_type='text/markdown',
     classifiers=[
@@ -26,7 +28,7 @@ setup(
     install_requires=[
         "numpy<1.22.0",
         "scikit-learn>=0.15.0,<1.1.0",
-        "scipy>=0.11,<1.8.0",
+        'scipy>=1.13.0',
         "tensorflow>=2.0.0",
         "h5py",
     ],
@@ -41,6 +43,6 @@ setup(
                         "wheel",
                         "sphinx",
                         "sphinx-rtd-theme"
-                    ]
+    ]
     }
 )
