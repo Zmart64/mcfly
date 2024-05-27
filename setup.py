@@ -25,7 +25,7 @@ setup(
     python_requires='>=3.7',
     install_requires=[
         "numpy>=1.26.4",
-        "scikit-learn>=0.15.0,<1.1.0",
+        "scikit-learn>=1.4.2",
         "scipy>=1.13.0",
         "tensorflow>=2.0.0",
         "h5py",
