@@ -49,7 +49,7 @@ jobs:
 
     - name: Set Berlin time without spaces
       id: berlin_time
-      run: echo "BERLIN_TIME=$(TZ='Europe/Berlin' date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+      run: echo "BERLIN_TIME=$(TZ='Europe/Berlin' date +'%Y %m %d %H:%M:%S')" >> $GITHUB_ENV
 
     - name: Delete old WHL files
       run: |
