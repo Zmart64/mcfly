@@ -25,7 +25,8 @@ from mcfly.task import Task
 def generate_models(x_shape,
                     number_of_output_dimensions,
                     number_of_models,
-                    model_types=['CNN', 'DeepConvLSTM', 'ResNet', 'InceptionTime'],
+                    model_types=['CNN', 'DeepConvLSTM',
+                                 'ResNet', 'InceptionTime'],
                     task=Task.classification,
                     metrics=['accuracy'],
                     **hyperparameter_ranges):
@@ -83,7 +84,8 @@ def generate_models(x_shape,
                 'low_reg': 1,
                 'high_reg': 4}
 
-    default_models = {model.model_name: model for model in [CNN, DeepConvLSTM, ResNet, InceptionTime]}
+    default_models = {model.model_name: model for model in [
+        CNN, DeepConvLSTM, ResNet, InceptionTime]}
 
     _check_arguments_validity(default_models, model_types, number_of_models)
     _update_hyperparameter_ranges(defaults, hyperparameter_ranges)
@@ -125,7 +127,8 @@ def _update_hyperparameter_ranges(defaults, hyperparameter_ranges):
     # Replace default hyperparameter ranges with input
     for key, value in hyperparameter_ranges.items():
         if key in defaults:
-            print("The value of {} is set from {} (default) to {}".format(key, defaults[key], value))
+            print("The value of {} is set from {} (default) to {}".format(
+                key, defaults[key], value))
             defaults[key] = value
     # Add missing parameters from default
     for key, value in defaults.items():
@@ -138,4 +141,5 @@ def _check_arguments_validity(default_models, model_types, number_of_models):
         if isinstance(model_type, str) and model_type not in default_models:
             raise NameError("Unknown model name, '{}'.".format(model_type))
     if number_of_models < len(model_types):
-        warnings.warn("Specified number_of_models is smaller than the given number of model types.")
+        warnings.warn(
+            "Specified number_of_models is smaller than the given number of model types.")

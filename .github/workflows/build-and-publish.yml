@@ -32,24 +32,18 @@ jobs:
       run: |
         prev_whl=$(ls dist/*.whl)
         version=$(basename "$prev_whl" | cut -d'-' -f2)
-        if [ "$version" == "4.0.0" ]; then
-          new_version="4.0.1"
-        elif [ "$version" == "4.0.1" ]; then
-          new_version="4.0.0"
-        else
-          IFS='.' read -r -a version_parts <<< "$version"
-          major="${version_parts[0]}"
-          minor="${version_parts[1]}"
-          patch="${version_parts[2]}"
-          patch=$((patch + 1))
-          new_version="$major.$minor.$patch"
-        fi
+        IFS='.' read -r -a version_parts <<< "$version"
+        major="${version_parts[0]}"
+        minor="${version_parts[1]}"
+        patch="${version_parts[2]}"
+        patch=$((patch + 1))
+        new_version="$major.$minor.$patch"
         echo "::set-output name=new_version::$new_version"
 
 
     - name: Set Berlin time without spaces
       id: berlin_time
-      run: echo "BERLIN_TIME=$(TZ='Europe/Berlin' date +'%Y %m %d %H:%M:%S')" >> $GITHUB_ENV
+      run: echo "BERLIN_TIME=$(TZ='Europe/Berlin' date +'%Y.%m.%d %H:%M:%S')" >> $GITHUB_ENV
 
     - name: Delete old WHL files
       run: |
