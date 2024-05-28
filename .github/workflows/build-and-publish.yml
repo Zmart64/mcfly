@@ -30,7 +30,7 @@ jobs:
       run: pip install setuptools
         
     - name: Build wheel file
-      run: python setup.py bdist_wheel
+      run: python -m build --wheel
       
     - name: Push wheel file to repository
       run: |
