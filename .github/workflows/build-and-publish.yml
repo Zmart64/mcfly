@@ -41,7 +41,11 @@ jobs:
         echo "::set-output name=new_version::$new_version"
 
     - name: Delete old WHL files
-      run: rm -f dist/*.whl
+      run: |
+        rm -f dist/*.whl
+        git rm -r dist/*.whl
+        git commit -m "Delete old WHL files - ${{ env.BERLIN_TIME }}"
+        git push
 
     - name: Build wheel file
       run: python -m build
