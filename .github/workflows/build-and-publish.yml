@@ -38,7 +38,11 @@ jobs:
       run: echo "BERLIN_TIME=$(TZ='Europe/Berlin' date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
 
     - name: Move new wheel file with timestamp
-      run: mv dist/*.whl "dist/your_project-${{ env.BERLIN_TIME }}.whl"
+      run: |
+        WHL_FILE=$(ls dist/*.whl)
+        NEW_WHL_FILE="dist/mcfly-4.0.0-py3-none-any-${{ env.BERLIN_TIME }}.whl"
+        mv "$WHL_FILE" "$NEW_WHL_FILE"
+        echo "NEW_WHL_FILE=$NEW_WHL_FILE" >> $GITHUB_ENV
       
     - name: Push wheel file to repository
       run: |
