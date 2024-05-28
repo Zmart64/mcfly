@@ -135,7 +135,7 @@ class CNN:
 
         if task is Task.classification:
             model.add(BatchNormalization())
-            model.add(Activation("softmax"))  # Final classification layer
+            model.add(Activation("sigmoid"))  # Final classification layer
             loss_function = 'categorical_crossentropy'
 
         elif task is Task.regression:

@@ -151,17 +151,21 @@ class DeepConvLSTM:
                            activation='tanh'))
 
         model.add(Dropout(0.5))  # dropout before the dense layer
+        
         # set up final dense layer such that every timestamp is given one
         # classification
-        model.add(
-            TimeDistributed(
-                Dense(units=dim_output, kernel_regularizer=l2(regularization_rate))))
+        # model.add(
+        #     TimeDistributed(
+        #         Dense(units=dim_output, kernel_regularizer=l2(regularization_rate))))
+
+        model.add(TimeDistributed(Dense(units=dim_output, kernel_regularizer=l2(regularization_rate))))
+        model.add(Lambda(lambda x: x[:, -1, :]))
 
         if task is Task.classification:
             model.add(Activation("sigmoid"))
 
         # Final classification layer - per timestep
-        model.add(Lambda(lambda x: x[:, -1, :], output_shape=[dim_output]))
+        # model.add(Lambda(lambda x: x[:, -1, :], output_shape=[dim_output]))
 
         if task is Task.classification:
             loss_function = 'binary_crossentropy'
