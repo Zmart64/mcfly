@@ -210,8 +210,6 @@ class InceptionTime:
         # Final classification layer
         output_layer = Dense(self.number_of_classes)(gap_layer)
 
-        print("IT WORKEDDDDD!")
-
         if task is Task.classification:
             loss_function = 'binary_crossentropy'
             output_layer = Activation('sigmoid')(output_layer)
