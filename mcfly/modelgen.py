@@ -82,7 +82,6 @@ def generate_models(x_shape,
                 'high_reg': 4}
 
     default_models = {model.model_name: model for model in [CNN, DeepConvLSTM, ResNet, InceptionTime]}
-    print("moin")
 
     _check_arguments_validity(default_models, model_types, number_of_models)
     _update_hyperparameter_ranges(defaults, hyperparameter_ranges)
