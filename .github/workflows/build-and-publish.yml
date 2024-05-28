@@ -23,9 +23,6 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: 3.11
-
-    - name: Delete old WHL files
-      run: rm -f dist/*.whl
         
     - name: Install build package
       run: pip install build
@@ -42,6 +39,9 @@ jobs:
         patch=$((patch + 1))
         new_version="$major.$minor.$patch"
         echo "::set-output name=new_version::$new_version"
+
+    - name: Delete old WHL files
+      run: rm -f dist/*.whl
 
     - name: Build wheel file
       run: python -m build
