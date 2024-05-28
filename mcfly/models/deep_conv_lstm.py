@@ -158,7 +158,7 @@ class DeepConvLSTM:
                 Dense(units=dim_output, kernel_regularizer=l2(regularization_rate))))
 
         if task is Task.classification:
-            model.add(Activation("softmax"))
+            model.add(Activation("sigmoid"))
 
         # Final classification layer - per timestep
         model.add(Lambda(lambda x: x[:, -1, :], output_shape=[dim_output]))
