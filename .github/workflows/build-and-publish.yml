@@ -30,14 +30,14 @@ jobs:
     - name: Build wheel file
       run: python -m build
       
-    - name: Set timestamp
-      id: timestamp
-      run: echo "::set-output name=timestamp::$(date +'%Y-%m-%d %H:%M:%S')"
+    - name: Set Berlin time
+      id: berlin_time
+      run: echo "::set-env name=BERLIN_TIME::$(TZ='Europe/Berlin' date +'%Y-%m-%d %H:%M:%S')"
       
     - name: Push wheel file to repository
       run: |
         git config user.name "${{ env.GIT_USER_NAME }}"
         git config user.email "${{ env.GIT_USER_EMAIL }}"
         git add dist/*.whl
-        git commit -m "Add new wheel file - ${{ steps.timestamp.outputs.timestamp }}"
+        git commit -m "Add new wheel file - ${{ env.BERLIN_TIME }}"
         git push
