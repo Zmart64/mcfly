@@ -212,7 +212,7 @@ class InceptionTime:
 
         if task is Task.classification:
             loss_function = 'binary_crossentropy'
-            output_layer = Activation('softmax')(output_layer)
+            output_layer = Activation('sigmoid')(output_layer)
         elif task is Task.regression:
             loss_function = 'mean_squared_error'
 
