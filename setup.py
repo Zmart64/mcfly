@@ -26,7 +26,7 @@ setup(
     test_suite="tests",
     python_requires='>=3.7',
     install_requires=[
-        "numpy>=1.26.4",
+        "numpy>=1.21.4",
         "scikit-learn>=1.4.2",
         "scipy>=1.13.0",
         "tensorflow>=2.0.0",
