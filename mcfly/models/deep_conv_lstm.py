@@ -165,6 +165,7 @@ class DeepConvLSTM:
         if task is Task.classification:
             model.add(Activation("sigmoid"))
 
+
         # Final classification layer - per timestep
         # model.add(Lambda(lambda x: x[:, -1, :], output_shape=[dim_output]))
 
