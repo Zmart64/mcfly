@@ -26,18 +26,18 @@ jobs:
         run: |
           which python3
           python3 --version
-      - name: Build package and create dev environment
-        run: |
-          python3 -m pip install --upgrade pip setuptools wheel
-          python3 -m pip install -e .[dev]
-      - name: Check style against standards using prospector
-        shell: bash -l {0}
-        run: prospector --profile linter_profile -o grouped -o pylint:pylint-report.txt --zero-exit
-      - name: Run unit test / Test coverage with Scrutinizer
-        run: |
-          coverage run --source=mcfly -m pytest
-          python3 -m pip install scrutinizer-ocular
-          ocular
+      # - name: Build package and create dev environment
+      #   run: |
+      #     python3 -m pip install --upgrade pip setuptools wheel
+      #     python3 -m pip install -e .[dev]
+      # - name: Check style against standards using prospector
+      #   shell: bash -l {0}
+      #   run: prospector --profile linter_profile -o grouped -o pylint:pylint-report.txt --zero-exit
+      # - name: Run unit test / Test coverage with Scrutinizer
+      #   run: |
+      #     coverage run --source=mcfly -m pytest
+      #     python3 -m pip install scrutinizer-ocular
+      #     ocular
 
   basic_checks:
     name: Run tests across OS and versions / python-${{ matrix.python-version }} / ${{ matrix.os }}
