@@ -23,6 +23,9 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: 3.11
+
+    - name: Delete old WHL file
+      run: rm -f dist/*.whl
         
     - name: Install build package
       run: pip install build
@@ -33,6 +36,9 @@ jobs:
     - name: Set Berlin time
       id: berlin_time
       run: echo "BERLIN_TIME=$(TZ='Europe/Berlin' date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+
+    - name: Move new wheel file with timestamp
+      run: mv dist/*.whl "dist/your_project-${{ env.BERLIN_TIME }}.whl"
       
     - name: Push wheel file to repository
       run: |
