@@ -24,7 +24,10 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.8
+        python-version: 3.
+        
+    - name: Install setuptools
+      run: pip install setuptools
         
     - name: Build wheel file
       run: python setup.py bdist_wheel
