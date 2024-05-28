@@ -24,29 +24,33 @@ jobs:
       with:
         python-version: 3.11
 
-    - name: Delete old WHL file
+    - name: Delete old WHL files
       run: rm -f dist/*.whl
         
     - name: Install build package
       run: pip install build
         
+    - name: Extract previous version number
+      id: extract_version
+      run: |
+        prev_whl=$(ls dist/*.whl)
+        version=$(basename "$prev_whl" | cut -d'-' -f2)
+        IFS='.' read -r -a version_parts <<< "$version"
+        major="${version_parts[0]}"
+        minor="${version_parts[1]}"
+        patch="${version_parts[2]}"
+        patch=$((patch + 1))
+        new_version="$major.$minor.$patch"
+        echo "::set-output name=new_version::$new_version"
+
     - name: Build wheel file
       run: python -m build
-      
-    - name: Set Berlin time
-      id: berlin_time
-      run: echo "BERLIN_TIME=$(TZ='Europe/Berlin' date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
 
-    - name: Move new wheel file with timestamp
+    - name: Rename wheel file with incremented version
       run: |
-        WHL_FILE=$(ls dist/*.whl)
-        TIMESTAMP=$(echo "${{ env.BERLIN_TIME }}" | tr -d ' :')
-        NEW_WHL_FILE="dist/mcfly-4.0.0-py3-none-any-${TIMESTAMP}.whl"
-        mv "$WHL_FILE" "$NEW_WHL_FILE"
-        echo "NEW_WHL_FILE=$NEW_WHL_FILE" >> $GITHUB_ENV
+        new_version="${{ steps.extract_version.outputs.new_version }}"
+        mv dist/*.whl "dist/mcfly-$new_version-py3-none-any.whl"
 
-
-      
     - name: Push wheel file to repository
       run: |
         git config user.name "${{ env.GIT_USER_NAME }}"
