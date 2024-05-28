@@ -12,14 +12,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Get Git user name
-      run: |
-        echo "GIT_USER_NAME=$(git config user.name)" >> $GITHUB_ENV
-
     - name: Get Git user info
       run: |
-        echo "GIT_USER_NAME=$(git config user.name)" >> $GITHUB_ENV
-        echo "GIT_USER_EMAIL=$(git config user.email)" >> $GITHUB_ENV  
+        GIT_USER_NAME=$(git config --global user.name)
+        GIT_USER_EMAIL=$(git config --global user.email)
+        echo "GIT_USER_NAME=${GIT_USER_NAME}" >> $GITHUB_ENV
+        echo "GIT_USER_EMAIL=${GIT_USER_EMAIL}" >> $GITHUB_ENV  
     
     - name: Set up Python
       uses: actions/setup-python@v4
