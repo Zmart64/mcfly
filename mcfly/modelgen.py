@@ -76,6 +76,8 @@ def generate_models(x_shape,
         List of compiled models
     """
 
+    print("Hallo")
+
     # Set default hyperparameter ranges
     defaults = {'low_lr': 1,
                 'high_lr': 4,
