@@ -75,7 +75,7 @@ jobs:
     - name: Checkout code from the other repository
       uses: actions/checkout@v3
       with:
-        repository: username/repository_name
+        repository: edblu1/dcaiti_2024
         ref: walking-standing-mcfly # or specify a specific branch if needed
       
     - name: Set Git user info for the other repository
