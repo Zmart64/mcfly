@@ -68,35 +68,35 @@ jobs:
         git commit -m "Add new wheel file - ${{ env.BERLIN_TIME }}"
         git push
 
-  update_toml:
-    runs-on: ubuntu-latest
+  # update_toml:
+  #   runs-on: ubuntu-latest
     
-    steps:
-    - name: Checkout code from the other repository
-      uses: actions/checkout@v3
-      with:
-        repository: edblu1/dcaiti_2024
-        ref: walking-standing-mcfly # or specify a specific branch if needed
+  #   steps:
+  #   - name: Checkout code from the other repository
+  #     uses: actions/checkout@v3
+  #     with:
+  #       repository: edblu1/dcaiti_2024
+  #       ref: walking-standing-mcfly # or specify a specific branch if needed
       
-    - name: Set Git user info for the other repository
-      run: |
-        git config user.name "${{ secrets.GIT_USER_NAME }}"
-        git config user.email "${{ secrets.GIT_USER_EMAIL }}"
+  #   - name: Set Git user info for the other repository
+  #     run: |
+  #       git config user.name "${{ secrets.GIT_USER_NAME }}"
+  #       git config user.email "${{ secrets.GIT_USER_EMAIL }}"
     
-    - name: Read previous version number
-      id: extract_version
-      run: |
-        prev_whl=$(ls dist/*.whl)
-        version=$(basename "$prev_whl" | cut -d'-' -f2)
-        echo "::set-output name=version::$version"
+  #   - name: Read previous version number
+  #     id: extract_version
+  #     run: |
+  #       prev_whl=$(ls dist/*.whl)
+  #       version=$(basename "$prev_whl" | cut -d'-' -f2)
+  #       echo "::set-output name=version::$version"
       
-    - name: Update pyproject.toml
-      run: |
-        new_version="${{ steps.extract_version.outputs.version }}"
-        sed -i "s/version = \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/version = \"$new_version\"/g" path/to/your/pyproject.toml
+  #   - name: Update pyproject.toml
+  #     run: |
+  #       new_version="${{ steps.extract_version.outputs.version }}"
+  #       sed -i "s/version = \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/version = \"$new_version\"/g" path/to/your/pyproject.toml
 
-    - name: Commit and push changes to the other repository
-      run: |
-        git add path/to/your/pyproject.toml
-        git commit -m "Update pyproject.toml to version ${{ steps.extract_version.outputs.version }}"
-        git push
+  #   - name: Commit and push changes to the other repository
+  #     run: |
+  #       git add path/to/your/pyproject.toml
+  #       git commit -m "Update pyproject.toml to version ${{ steps.extract_version.outputs.version }}"
+  #       git push
