@@ -40,9 +40,11 @@ jobs:
     - name: Move new wheel file with timestamp
       run: |
         WHL_FILE=$(ls dist/*.whl)
-        NEW_WHL_FILE="dist/mcfly-4.0.0-py3-none-any-${{ env.BERLIN_TIME }}.whl"
+        TIMESTAMP=$(echo "${{ env.BERLIN_TIME }}" | tr -d ' ')
+        NEW_WHL_FILE="dist/mcfly-4.0.0-py3-none-any-${TIMESTAMP}.whl"
         mv "$WHL_FILE" "$NEW_WHL_FILE"
         echo "NEW_WHL_FILE=$NEW_WHL_FILE" >> $GITHUB_ENV
+
       
     - name: Push wheel file to repository
       run: |
